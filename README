@@ -1,0 +1,274 @@
+- Javascript está cada vez mais se tornando uma linguagem importante.
+- Tem coisas legais, funções anômimas, clojures, etc.
+- PROBLEMA: sintaxe
+  - Não da pra escrever código claro em javascript
+
+names = people.map { |person| person.name.capitalized }
+
+var names = []
+for(var i in people) {
+  var person = people[i];
+  var name = person.name.slice(0, 1).toUpperCase() + person.name.slice(1);
+  names.push(name)
+}
+
+- Podemos melhorar, claro!
+  Javascript é legal, também podemos extender a linguagem da mesma forma que fazemos em ruby!
+
+Array.prototype.map = function(callback) {
+  var values = [];
+  for(var i in this) {
+    values.push(callback(this[i]));
+  }
+  return values;
+}
+
+String.prototype.capitalize = function() {
+  return this.slice(0, 1).toUpperCase() + this.slice(1);
+}
+
+names = people.map(function(person){
+  return person.name.capitalize();
+});
+
+names = person.capitalize() for person in people
+
+Mas e o dia que os browsers evoluirem e implementarem a função map e capitilize? E seu eu incluir o prototype, que também tem essas funções? ...?
+
+Soluções?
+
+GWT - Google Web Toolkit
+Escreve em Java e compila em javascript - gera um arquivo gigante
+
+Dart
+https://gist.github.com/1289466
+
+Objective-J
+
+Coffeescript
+
+class HelloCoffeeTest
+  @testMain: ->
+    alert "Hello, CoffeeScripter!"
+
+HelloCoffeeTest.testMain()
+
+
+var HelloCoffeeTest;
+HelloCoffeeTest = (function() {
+  function HelloCoffeeTest() {}
+  HelloCoffeeTest.testMain = function() {
+    return alert("Hello, CoffeeScripter!");
+  };
+  return HelloCoffeeTest;
+})();
+
+HelloCoffeeTest.testMain();
+
+
+
+The good parts joke
+
+# 1
+(function(){
+  // codigo privado
+}).call(this);
+
+# 2
+Nunca declara variaveis globais acidentalmente
+
+# Funcoes
+
+function hello(name) {
+  return "Hello " + name;
+}
+
+hello = (name) ->
+  "Hello #{name}"
+
+$("a").click(function(event){
+  $(this).addClass("active")
+});
+
+$("a").click ->
+  $(this).addClass "active"
+
+# 4 Sintaxe limpa
+Clareza é importante
+
+if(url) {
+  $.get(url, function(data) {
+    $("#result").html(data);
+  })
+} else {
+  $("#error").show();
+}
+
+if url
+  $.get url, (data) ->
+    $("#result").html data
+else
+  $("#error").show()
+
+# Criação de objetos
+$("div").css({top: "15px", left: "5px"})
+$("div").css top: "15px", left: "5px"
+
+$.ajax({
+  url: "/articles",
+  method: "POST",
+  timeout: 5,
+  data: {
+    title: "Novo artigo",
+    description: "Bla"
+  },
+  dataType: "html",
+  success: function() {
+    $("#message").html("Artigo criado com sucesso!")
+  }
+})
+
+$.ajax
+  url: "/articles"
+  method: "POST"
+  timeout: 5
+  data:
+    title: "Novo artigo"
+    description: "Bla"
+  dataType: "html"
+  success: ->
+    $("#message").html "Artigo criado com sucesso"
+
+# Tudo tem um valor
+
+var command = "";
+
+switch(keyCode){
+  case 45:
+    command = "previous";
+    break;
+  case 46:
+    command = "next";
+    break;
+}
+
+command = switch keyCode
+  when 45 then "previous"
+  when 46 then "next"
+
+# Self = this
+
+var navarro = {
+  name: "Navarro",
+  greet: function(person) {
+    alert("Hi " + person + ", my name is " + this.name);
+  }
+};
+
+var name = "Pelos"
+
+navarro.greet("Guilherme");
+
+# COmprehensions
+names = []
+for person in people
+  names.push person.name
+
+pode ser assignado pq tudo é um valor
+
+names = for person in people
+  person.name
+
+names = person.name for person in people
+
+ou seja... um map
+
+tmb pode fazer um select
+names = person.name for person in people when person.age > 18
+
+# Classes e herança
+
+class Photo
+  constructor: (url) ->
+    this.url = url
+
+  createElement: ->
+    $("<img>").attr "src", this.url
+
+class Photo
+  constructor: (url) ->
+    @url = url
+
+  createElement: ->
+    $("<img>").attr "src", @url
+
+class Photo
+  constructor: (@url) ->
+
+  createElement: ->
+    $("<img>").attr "src", @url
+
+class Thumbnail extends Photo
+  createElement: ->
+    $el = super
+    $el.height 100
+
+# Self = this
+
+class PersonView
+  constructor: (@person, @el) ->
+
+  request: ->
+    $.get @person.url, (data) ->
+      $(@el).html data
+
+class PersonView
+  constructor: (@person, @el) ->
+
+  request: ->
+    self = this
+    $.get @person.url, (data) ->
+      $(self.el).html data
+
+class PersonView
+  constructor: (@person, @el) ->
+
+  request: ->
+    $.get @person.url, (data) =>
+      $(@el).html data
+
+class PersonView
+  constructor: (@person, @el) ->
+    @el.bind "click", @showName
+
+  showName: ->
+    $(@el).html(@person.name)
+
+class PersonView
+  constructor: (@person, @el) ->
+    @el.bind "click", @showName
+
+  showName: =>
+    $(@el).html(@person.name)
+
+# Conditionals
+
+alert "I knew it!" if elvis?
+
+# Assignments
+
+memoize
+
+user ?= loadUser()
+
+user =
+  name: "Rodrigo"
+  age: 25
+  city: "SBO"
+
+{name, city} = user
+
+[first, last] = user.name.split(" ")
+
+# Strings
+"Interpolando #{person.name}"
